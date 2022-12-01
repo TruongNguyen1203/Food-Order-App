@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Navbar from "./components/Layout/Navbar/Navbar";
+import mealImg from "./assets/meals.jpeg";
+import MealDescription from "./components/Meals/MealDescription/MealDescription";
+import MealAvailables from "./components/Meals/MealAvailables/MealAvailables";
+import Cart from "../src/components/Cart/Cart";
 
 function App() {
+  const [isCart, setIsCart] = useState(false);
+
+  const onClickHandler = () => {
+    setIsCart(true);
+  };
+
+  const onCloseCart = () => {
+    setIsCart(false);
+  }
+
+  const onOrderCart = () => {
+    setIsCart(false);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {isCart && <Cart onCloseCart={onCloseCart} onOrderCart={onOrderCart}></Cart>}
+      <Navbar onClick={onClickHandler}></Navbar>
+      <div className="main-img">
+        <img src={mealImg} alt="Meal image"></img>
+      </div>
+      <MealDescription></MealDescription>
+      <MealAvailables></MealAvailables>
     </div>
   );
 }
