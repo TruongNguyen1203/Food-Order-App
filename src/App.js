@@ -5,6 +5,7 @@ import mealImg from "./assets/meals.jpeg";
 import MealDescription from "./components/Meals/MealDescription/MealDescription";
 import MealAvailables from "./components/Meals/MealAvailables/MealAvailables";
 import Cart from "../src/components/Cart/Cart";
+import CartContextProvider from '../src/store/CartContextProvider';
 
 function App() {
   const [isCart, setIsCart] = useState(false);
@@ -22,7 +23,7 @@ function App() {
   }
 
   return (
-    <div>
+    <CartContextProvider>
       {isCart && <Cart onCloseCart={onCloseCart} onOrderCart={onOrderCart}></Cart>}
       <Navbar onClick={onClickHandler}></Navbar>
       <div className="main-img">
@@ -30,7 +31,7 @@ function App() {
       </div>
       <MealDescription></MealDescription>
       <MealAvailables></MealAvailables>
-    </div>
+    </CartContextProvider>
   );
 }
 

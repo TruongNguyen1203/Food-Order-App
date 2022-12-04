@@ -1,6 +1,7 @@
-import React from "react";
-import Card from '../../UI/Card/Card'
-import classes from './MealAvailables.module.css'
+import React, { useContext, useState, useRef } from "react";
+import Card from "../../UI/Card/Card";
+import classes from "./MealAvailables.module.css";
+import CartContext from "../../../store/CartContext";
 const DUMMY_MEALS = [
   {
     id: "m1",
@@ -29,22 +30,51 @@ const DUMMY_MEALS = [
 ];
 
 const MealAvailables = (props) => {
+  const cartContext = useContext(CartContext);
+
+  const inputRef = useRef();
+
+  const addItemToCartHandler = (item) => {
+    let amount  = inputRef.current.value;
+    const addedItem = { ...item, amount: +amount };
+    cartContext.addItemToCart(addedItem);
+  };
   return (
     <Card className={classes.container}>
       <ul>
         {DUMMY_MEALS.map((meal, index) => (
           <li key={index}>
-              <div className={classes.item}>
-                  <div className={classes['item-info']}>
-                      <p className={classes['item-name']}>{meal.name}</p>
-                      <p className={classes['item-description']}>{meal.description}</p>
-                      <p className={classes['item-price']}>${meal.price}</p>
-                  </div>
-                  <div className={classes['item-info']}>
-                      <p className={classes['item-amount']}>Amount <input className={classes['item-input']} type="number"></input></p>
-                      <button className={classes.btnAdd}>+ Add</button>
-                  </div>
+            <div className={classes.item}>
+              <div className={classes["item-info"]}>
+                <p className={classes["item-name"]}>{meal.name}</p>
+                <p className={classes["item-description"]}>
+                  {meal.description}
+                </p>
+                <p className={classes["item-price"]}>${meal.price}</p>
               </div>
+              <div className={classes["item-info"]}>
+                <p className={classes["item-amount"]}>
+                  Amount{" "}
+                  <input
+                    ref={inputRef}
+                    id = {index}
+                    className={classes["item-input"]}
+                    type="number"
+                    min="1"
+                    max="5"
+                    defaultValue="1"
+                  ></input>
+                </p>
+                <button
+                  className={classes.btnAdd}
+                  onClick={() => {
+                    addItemToCartHandler(meal);
+                  }}
+                >
+                  + Add
+                </button>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
